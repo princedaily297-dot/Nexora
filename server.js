@@ -20,8 +20,6 @@ const saveDB = (data) => fs.writeFileSync(DB, JSON.stringify(data));
 // Serve your landing page!
 app.use(express.static(__dirname));
 
-// --- API ROUTES ---
-
 // 1. Register
 app.post('/api/register', async (req, res) => {
     const { business, email, password, whatsapp } = req.body;
@@ -50,14 +48,13 @@ app.post('/api/login', async (req, res) => {
 // 3. Logout
 app.get('/logout', (req, res) => { res.clearCookie('token'); res.redirect('/'); });
 
-// Check if logged in
 const auth = (req, res, next) => {
     if (!req.cookies.token) return res.redirect('/login');
     try { req.userId = jwt.verify(req.cookies.token, SECRET).id; next(); }
     catch { res.redirect('/login'); }
 };
 
-// 4. Dashboard (Protected)
+// 4. Dashboard
 app.get('/dashboard', auth, (req, res) => {
     const db = getDB();
     const user = db.users.find(u => u.id === req.userId);
@@ -65,7 +62,7 @@ app.get('/dashboard', auth, (req, res) => {
     let productHTML = myProducts.map(p => `<div class="border border-gray-700 p-4 mb-2 rounded"><h3 class="text-[#D4AF37]">${p.name}</h3><p class="text-gray-400">₦${p.price}</p></div>`).join('');
 
     res.send(`
-        <html><head><meta name="viewport" content="width=device-width, initial-scale=1"><script src="https://cdn.tailwindcss.com"></script></head>
+        <html><head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><script src="https://cdn.tailwindcss.com"></script></head>
         <body class="bg-gray-900 text-white p-6">
             <h1 class="text-2xl font-bold text-[#D4AF37] mb-2">${user.business} Dashboard</h1>
             <p class="mb-6">Your Shop Link: <a href="/shop/${user.slug}" class="text-blue-400 underline">/shop/${user.slug}</a></p>
@@ -73,8 +70,8 @@ app.get('/dashboard', auth, (req, res) => {
             <div class="bg-gray-800 p-4 rounded mb-8">
                 <h2 class="text-xl mb-3">Add Product</h2>
                 <form action="/api/products" method="POST" class="flex flex-col gap-3">
-                    <input name="name" placeholder="Product Name" class="p-3 text-black rounded" required>
-                    <input name="price" type="number" placeholder="Price (₦)" class="p-3 text-black rounded" required>
+                    <input name="name" placeholder="Product Name" class="p-3 text-black rounded text-lg" required>
+                    <input name="price" type="number" placeholder="Price (₦)" class="p-3 text-black rounded text-lg" required>
                     <button class="bg-[#D4AF37] text-black p-3 rounded font-bold">Add to Catalog</button>
                 </form>
             </div>
@@ -85,7 +82,7 @@ app.get('/dashboard', auth, (req, res) => {
     `);
 });
 
-// 5. Add Product (API)
+// 5. Add Product
 app.post('/api/products', auth, (req, res) => {
     const { name, price } = req.body;
     const db = getDB();
@@ -94,15 +91,15 @@ app.post('/api/products', auth, (req, res) => {
     res.redirect('/dashboard');
 });
 
-// 6. Login & Register Pages
+// 6. Login Page
 app.get('/login', (req, res) => {
     res.send(`
-        <html><head><meta name="viewport" content="width=device-width, initial-scale=1"><script src="https://cdn.tailwindcss.com"></script></head>
+        <html><head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><script src="https://cdn.tailwindcss.com"></script></head>
         <body class="bg-gray-900 text-white p-6 flex flex-col items-center pt-20">
             <h1 class="text-3xl font-bold text-[#D4AF37] mb-6">Login</h1>
             <form action="/api/login" method="POST" class="flex flex-col gap-4 w-full max-w-sm">
-                <input name="email" type="email" placeholder="Email" class="p-3 text-black rounded" required>
-                <input name="password" type="password" placeholder="Password" class="p-3 text-black rounded" required>
+                <input name="email" type="email" placeholder="Email" class="p-3 text-black rounded text-lg" required>
+                <input name="password" type="password" placeholder="Password" class="p-3 text-black rounded text-lg" required>
                 <button class="bg-[#D4AF37] text-black p-3 rounded font-bold">Login</button>
             </form>
             <p class="mt-4 text-sm">No account? <a href="/register" class="text-[#D4AF37]">Register</a></p>
@@ -110,16 +107,17 @@ app.get('/login', (req, res) => {
     `);
 });
 
+// 7. Register Page
 app.get('/register', (req, res) => {
     res.send(`
-        <html><head><meta name="viewport" content="width=device-width, initial-scale=1"><script src="https://cdn.tailwindcss.com"></script></head>
+        <html><head><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"><script src="https://cdn.tailwindcss.com"></script></head>
         <body class="bg-gray-900 text-white p-6 flex flex-col items-center pt-10">
             <h1 class="text-3xl font-bold text-[#D4AF37] mb-6">Create Shop</h1>
             <form action="/api/register" method="POST" class="flex flex-col gap-4 w-full max-w-sm">
-                <input name="business" placeholder="Business Name" class="p-3 text-black rounded" required>
-                <input name="email" type="email" placeholder="Email" class="p-3 text-black rounded" required>
-                <input name="whatsapp" placeholder="WhatsApp (e.g. 2348012345678)" class="p-3 text-black rounded" required>
-                <input name="password" type="password" placeholder="Password" class="p-3 text-black rounded" required>
+                <input name="business" placeholder="Business Name" class="p-3 text-black rounded text-lg" required>
+                <input name="email" type="email" placeholder="Email" class="p-3 text-black rounded text-lg" required>
+                <input name="whatsapp" placeholder="WhatsApp (e.g. 2348012345678)" class="p-3 text-black rounded text-lg" required>
+                <input name="password" type="password" placeholder="Password" class="p-3 text-black rounded text-lg" required>
                 <button class="bg-[#D4AF37] text-black p-3 rounded font-bold">Create Account</button>
             </form>
             <p class="mt-4 text-sm">Have an account? <a href="/login" class="text-[#D4AF37]">Login</a></p>
@@ -127,7 +125,7 @@ app.get('/register', (req, res) => {
     `);
 });
 
-// 7. Public Storefront
+// 8. Public Storefront
 app.get('/shop/:slug', (req, res) => {
     const db = getDB();
     const user = db.users.find(u => u.slug === req.params.slug);
@@ -143,7 +141,7 @@ app.get('/shop/:slug', (req, res) => {
     `).join('');
 
     res.send(`
-        <html><head><meta name="viewport" content="width=device-width, initial-scale=1"><script src="https://cdn.tailwindcss.com"></script></head>
+        <html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><script src="https://cdn.tailwindcss.com"></script></head>
         <body class="bg-gray-900 text-white p-6">
             <h1 class="text-3xl font-bold text-[#D4AF37] mb-8 text-center">${user.business}</h1>
             <div class="max-w-md mx-auto">${productHTML || '<p class="text-center">No products yet.</p>'}</div>

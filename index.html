@@ -17,120 +17,90 @@
     }
   </script>
   <style>
-    body { background-color: #0A0A0A; color: #FFFFFF; }
+    body { background-color: #0A0A0A; color: #FFFFFF; overflow-x: hidden; }
+    
+    /* Rotating Orbit Animation */
+    @keyframes spin-slow { 100% { transform: rotate(360deg); } }
+    @keyframes spin-reverse { 100% { transform: rotate(-360deg); } }
+    .orbit-slow { animation: spin-slow 25s linear infinite; }
+    .orbit-fast { animation: spin-reverse 15s linear infinite; }
+    
+    /* Glassmorphism */
+    .glass {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
   </style>
 </head>
 <body class="antialiased">
 
   <!-- Navbar -->
-  <nav class="fixed top-0 w-full z-50 bg-black/80 backdrop-blur border-b border-white/10">
+  <nav class="fixed top-0 w-full z-50 glass">
     <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
       <a href="/" class="text-2xl font-bold text-gold tracking-wide">NEXORA</a>
       <div class="flex gap-4 text-sm items-center">
-        <a href="#pricing" class="hover:text-gold transition hidden sm:block">Pricing</a>
-        <a href="/login" class="hover:text-gold transition">Login</a>
-        <a href="/register" class="bg-gold text-black px-4 py-2 rounded-full font-semibold hover:bg-yellow-500 transition">Get Started</a>
+        <a href="/login" class="hover:text-gold transition font-semibold">Login</a>
+        <a href="/register" class="bg-gold text-black px-5 py-2 rounded-full font-bold hover:bg-yellow-500 transition">Get Started</a>
       </div>
     </div>
   </nav>
 
-  <!-- Hero -->
-  <section class="pt-40 pb-24 px-6 text-center max-w-4xl mx-auto">
-    <p class="text-gold text-xs tracking-widest uppercase mb-4">Premium Online Shops for Nigerian Businesses</p>
-    <h1 class="text-4xl md:text-7xl font-bold mb-6 leading-tight">
+  <!-- Hero with Animation -->
+  <section class="pt-32 pb-24 px-6 text-center max-w-5xl mx-auto min-h-screen flex flex-col justify-center relative">
+    
+    <!-- The Orbit Graphic -->
+    <div class="relative w-72 h-72 md:w-96 md:h-96 mx-auto mb-10 flex items-center justify-center">
+      <!-- Outer Ring -->
+      <div class="absolute inset-0 border border-white/20 rounded-full orbit-slow"></div>
+      <!-- Inner Ring -->
+      <div class="absolute inset-8 border-2 border-gold/30 border-dashed rounded-full orbit-fast"></div>
+      
+      <!-- Floating Orbs (representing features) -->
+      <div class="absolute -top-3 left-1/2 -translate-x-1/2 w-8 h-8 bg-gold rounded-full shadow-[0_0_20px_#D4AF37]"></div>
+      <div class="absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 bg-white rounded-full shadow-[0_0_15px_#ffffff]"></div>
+      <div class="absolute top-1/2 -right-3 -translate-y-1/2 w-7 h-7 border-2 border-gold rounded-full bg-black"></div>
+      <div class="absolute top-1/2 -left-3 -translate-y-1/2 w-5 h-5 bg-gray-500 rounded-full"></div>
+
+      <!-- Center Text -->
+      <div class="z-10 flex flex-col items-center">
+        <h1 class="text-4xl font-extrabold text-white">NEXORA</h1>
+        <p class="text-gold text-xs tracking-widest uppercase mt-2">Premium Shops</p>
+      </div>
+    </div>
+
+    <h2 class="text-3xl md:text-5xl font-bold mb-6 leading-tight">
       Your business deserves a <span class="text-gold">premium</span> online presence.
-    </h1>
-    <p class="text-lg text-gray-400 mb-10 max-w-2xl mx-auto">
-      NEXORA gives every Nigerian small business a beautiful online shop, product catalogue, and WhatsApp ordering — set up in minutes.
+    </h2>
+    <p class="text-gray-400 mb-10 max-w-xl mx-auto">
+      Create a beautiful online shop, showcase products, and receive orders via WhatsApp — in minutes.
     </p>
     <div class="flex gap-4 justify-center flex-wrap">
-      <a href="/register" class="bg-gold text-black px-8 py-4 rounded-full font-semibold text-lg hover:bg-yellow-500 transition">Create Your Shop</a>
-      <a href="#features" class="border border-white/20 px-8 py-4 rounded-full font-semibold text-lg hover:border-gold hover:text-gold transition">See How It Works</a>
+      <a href="/register" class="bg-gold text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-yellow-500 transition shadow-[0_0_20px_rgba(212,175,55,0.4)]">Create Your Shop</a>
+      <a href="#features" class="glass text-white px-8 py-4 rounded-full font-semibold text-lg hover:border-gold transition">See How It Works</a>
     </div>
   </section>
 
   <!-- Features -->
   <section id="features" class="py-24 px-6 max-w-6xl mx-auto">
-    <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">Everything your shop needs</h2>
-    <p class="text-gray-400 text-center mb-16">Built for busy business owners who want to sell more without stress.</p>
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Everything your shop needs</h2>
     <div class="grid md:grid-cols-3 gap-6">
-      <div class="border border-white/10 rounded-2xl p-6 hover:border-gold transition">
-        <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mb-4"><div class="w-2 h-2 rounded-full bg-gold"></div></div>
-        <h3 class="text-xl font-semibold mb-2">Your Own Shop Page</h3>
-        <p class="text-gray-400 text-sm">Beautiful, mobile-friendly storefront with a unique link to share anywhere.</p>
+      <div class="glass rounded-2xl p-8 hover:-translate-y-2 transition duration-300">
+        <h3 class="text-xl font-semibold mb-3 text-gold">Your Own Shop</h3>
+        <p class="text-gray-400 text-sm">Mobile-friendly storefront with a unique link to share anywhere.</p>
       </div>
-      <div class="border border-white/10 rounded-2xl p-6 hover:border-gold transition">
-        <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mb-4"><div class="w-2 h-2 rounded-full bg-gold"></div></div>
-        <h3 class="text-xl font-semibold mb-2">Product Catalogue</h3>
+      <div class="glass rounded-2xl p-8 hover:-translate-y-2 transition duration-300">
+        <h3 class="text-xl font-semibold mb-3 text-gold">Product Catalogue</h3>
         <p class="text-gray-400 text-sm">Add products, upload images, set prices. Fast and simple.</p>
       </div>
-      <div class="border border-white/10 rounded-2xl p-6 hover:border-gold transition">
-        <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mb-4"><div class="w-2 h-2 rounded-full bg-gold"></div></div>
-        <h3 class="text-xl font-semibold mb-2">WhatsApp Orders</h3>
-        <p class="text-gray-400 text-sm">Customers tap to order and their message is pre-filled. No back and forth.</p>
-      </div>
-      <div class="border border-white/10 rounded-2xl p-6 hover:border-gold transition">
-        <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mb-4"><div class="w-2 h-2 rounded-full bg-gold"></div></div>
-        <h3 class="text-xl font-semibold mb-2">Order Dashboard</h3>
-        <p class="text-gray-400 text-sm">See incoming orders, update status from pending to completed.</p>
-      </div>
-      <div class="border border-white/10 rounded-2xl p-6 hover:border-gold transition">
-        <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mb-4"><div class="w-2 h-2 rounded-full bg-gold"></div></div>
-        <h3 class="text-xl font-semibold mb-2">Premium Design</h3>
-        <p class="text-gray-400 text-sm">Black, white and gold. Every shop looks like a real brand.</p>
-      </div>
-      <div class="border border-white/10 rounded-2xl p-6 hover:border-gold transition">
-        <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mb-4"><div class="w-2 h-2 rounded-full bg-gold"></div></div>
-        <h3 class="text-xl font-semibold mb-2">Grow With You</h3>
-        <p class="text-gray-400 text-sm">Start with Starter. Upgrade to Premium as you grow.</p>
+      <div class="glass rounded-2xl p-8 hover:-translate-y-2 transition duration-300">
+        <h3 class="text-xl font-semibold mb-3 text-gold">WhatsApp Orders</h3>
+        <p class="text-gray-400 text-sm">Customers tap to order and their message is pre-filled.</p>
       </div>
     </div>
   </section>
 
-  <!-- Pricing -->
-  <section id="pricing" class="py-24 px-6 max-w-6xl mx-auto">
-    <h2 class="text-3xl md:text-4xl font-bold text-center mb-4">Simple, honest pricing</h2>
-    <p class="text-gray-400 text-center mb-16">Pay once to set up. Small monthly fee to keep your shop running.</p>
-    <div class="grid md:grid-cols-3 gap-6">
-      <div class="border border-white/10 rounded-2xl p-8">
-        <h3 class="text-2xl font-bold mb-1">Starter</h3>
-        <p class="text-gray-400 text-sm mb-6">One-time shop setup</p>
-        <p class="text-4xl font-bold mb-6">₦5,000</p>
-        <ul class="space-y-2 mb-8">
-          <li class="text-gray-300 flex items-center gap-2 text-sm"><span class="text-gold">✓</span> Your own shop page</li>
-          <li class="text-gray-300 flex items-center gap-2 text-sm"><span class="text-gold">✓</span> Up to 20 products</li>
-          <li class="text-gray-300 flex items-center gap-2 text-sm"><span class="text-gold">✓</span> WhatsApp ordering</li>
-        </ul>
-        <a href="/register" class="block text-center py-3 rounded-full font-semibold border border-white/20 hover:border-gold hover:text-gold transition">Get Started</a>
-      </div>
-      <div class="border-2 border-gold bg-gold/5 rounded-2xl p-8 relative">
-        <p class="text-gold text-xs uppercase tracking-widest mb-2">Most Popular</p>
-        <h3 class="text-2xl font-bold mb-1">Premium</h3>
-        <p class="text-gray-400 text-sm mb-6">One-time shop setup</p>
-        <p class="text-4xl font-bold mb-6">₦10,000</p>
-        <ul class="space-y-2 mb-8">
-          <li class="text-gray-300 flex items-center gap-2 text-sm"><span class="text-gold">✓</span> Everything in Starter</li>
-          <li class="text-gray-300 flex items-center gap-2 text-sm"><span class="text-gold">✓</span> Unlimited products</li>
-          <li class="text-gray-300 flex items-center gap-2 text-sm"><span class="text-gold">✓</span> Priority support</li>
-          <li class="text-gray-300 flex items-center gap-2 text-sm"><span class="text-gold">✓</span> Custom branding</li>
-        </ul>
-        <a href="/register" class="block text-center py-3 rounded-full font-semibold bg-gold text-black hover:bg-yellow-500 transition">Get Started</a>
-      </div>
-      <div class="border border-white/10 rounded-2xl p-8">
-        <h3 class="text-2xl font-bold mb-1">Maintenance</h3>
-        <p class="text-gray-400 text-sm mb-6">Keep your shop running</p>
-        <p class="text-4xl font-bold mb-6">₦2,000<span class="text-lg text-gray-400">/mo</span></p>
-        <ul class="space-y-2 mb-8">
-          <li class="text-gray-300 flex items-center gap-2 text-sm"><span class="text-gold">✓</span> Hosting & updates</li>
-          <li class="text-gray-300 flex items-center gap-2 text-sm"><span class="text-gold">✓</span> Security patches</li>
-          <li class="text-gray-300 flex items-center gap-2 text-sm"><span class="text-gold">✓</span> Backup & support</li>
-        </ul>
-        <a href="/register" class="block text-center py-3 rounded-full font-semibold border border-white/20 hover:border-gold hover:text-gold transition">Get Started</a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Footer -->
   <footer class="border-t border-white/10 py-8 px-6 text-center text-gray-500 text-sm">
     © 2026 NEXORA. Built for Nigerian businesses.
   </footer>
